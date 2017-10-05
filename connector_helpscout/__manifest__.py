@@ -20,6 +20,7 @@
         "partner_firstname",
         "project",
         "queue_job",
+        "sales_team",
     ],
     "data": [
         "security/ir.model.access.csv",
