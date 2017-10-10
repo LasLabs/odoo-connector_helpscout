@@ -29,8 +29,11 @@ class HelpScoutUserImportMapper(Component):
     @mapping
     @only_create
     def odoo_id(self, record):
+        # Searches res.users records for matching email address,
+        # excluding non-internal-users (e.g. customer users)
         user = self.env['res.users'].search([
             (self.backend_record.user_match_field, '=', record.email),
+            ('share', '=', False),
         ])
         if user:
             return {'odoo_id': user.id}
