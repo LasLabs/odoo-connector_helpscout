@@ -56,6 +56,18 @@ class HelpscoutBackend(models.Model):
              'this company, that are not otherwise assigned to a HelpScout '
              'backend.',
     )
+    user_match_field = fields.Selection(
+        selection=[
+            ('email', 'Email'),
+            ('login', 'Login'),
+        ],
+        required=True,
+        default='email',
+        string='User Match Field',
+        help='Select which Odoo user field to use when matching imported '
+             'Helpscout users to existing Odoo users. This field will be '
+             'matched against the Helpscout user\'s email address.'
+    )
 
     # These dates are used by the import crons to start where left off.
     import_customers_from_date = fields.Datetime()

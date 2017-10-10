@@ -83,6 +83,11 @@
                                         string="Queue Import" />
                             </group>
                         </page>
+                        <page name="page_settings" string="Settings">
+                            <group name="group_users" string="Users">
+                                <field name="user_match_field" />
+                            </group>
+                        </page>
                     </notebook>
 
                 </sheet>

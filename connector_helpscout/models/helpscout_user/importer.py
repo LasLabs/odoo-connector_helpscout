@@ -6,7 +6,7 @@ import logging
 import urllib2
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping, none
+from odoo.addons.connector.components.mapper import mapping, none, only_create
 
 _logger = logging.getLogger(__name__)
 
@@ -18,13 +18,22 @@ class HelpScoutUserImportMapper(Component):
 
     direct = [(none('first_name'), 'firstname'),
               (none('last_name'), 'lastname'),
-              (none('email'), 'login'),
-              (none('email'), 'email'),
+              ('email', 'login'),
+              ('email', 'email'),
               (none('timezone'), 'tz'),
               (none('type'), 'helpscout_type'),
               ('created_at', 'backend_date_created'),
               ('modified_at', 'backend_date_modified'),
               ]
+
+    @mapping
+    @only_create
+    def odoo_id(self, record):
+        user = self.env['res.users'].search([
+            (self.backend_record.user_match_field, '=', record.email),
+        ])
+        if user:
+            return {'odoo_id': user.id}
 
     @mapping
     def photo_url(self, record):

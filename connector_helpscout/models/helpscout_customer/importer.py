@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping, none
+from odoo.addons.connector.components.mapper import mapping, none, only_create
 
 
 class HelpScoutCustomerImportMapper(Component):
@@ -25,6 +25,22 @@ class HelpScoutCustomerImportMapper(Component):
             return {'email': record.emails[0].value}
         except IndexError:
             return
+
+    @mapping
+    @only_create
+    def odoo_id(self, record):
+        # Searches res.partner records for matching email address,
+        # excluding internal users
+        try:
+            customer = self.env['res.partner'].search([
+                ('email', '=', record.emails[0].value),
+                ('user_id', '=', False),
+            ])
+        except IndexError:
+            return
+
+        if customer:
+            return {'odoo_id': customer.id}
 
     @mapping
     def phones(self, record):
