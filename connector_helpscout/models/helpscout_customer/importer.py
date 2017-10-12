@@ -33,10 +33,11 @@ class HelpScoutCustomerImportMapper(Component):
         # excluding internal users
         try:
             customer = self.env['res.partner'].search([
-                ('email', '=', record.emails[0].value),
+                ('email', '=', self.email(record)['email']),
                 ('user_id', '=', False),
             ])
-        except IndexError:
+        except AttributeError:
+            # In case no email is found
             return
 
         if customer:
