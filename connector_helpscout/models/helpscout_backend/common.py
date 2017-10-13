@@ -26,6 +26,7 @@ class HelpscoutBackend(models.Model):
     EVENT_TO_MODEL = {
         'customer': 'helpscout.customer',
         'mailbox': 'helpscout.mailbox',
+        'mailbox_folder': 'helpscout.mailbox.folder',
         'user': 'helpscout.user',
         'satisfaction': 'helpscout.rating',
         'convo': 'helpscout.conversation',
