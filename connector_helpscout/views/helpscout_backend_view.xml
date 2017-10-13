@@ -45,6 +45,20 @@
                     <notebook>
 
                         <page name="page_imports" string="Imports">
+                            <group name="group_import_conversations">
+                                <div>
+                                    <label for="import_conversations_from_date"
+                                           string="Import Conversations From"
+                                           class="oe_inline" />
+                                    <field name="import_conversations_from_date"
+                                           class="oe_inline"
+                                           nolabel="1" />
+                                </div>
+                                <button name="action_import_conversations"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Queue Import" />
+                            </group>
                             <group name="group_import_customers">
                                 <div>
                                     <label for="import_customers_from_date"

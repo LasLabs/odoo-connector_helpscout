@@ -30,6 +30,11 @@ class HelpScoutFolder(models.Model):
         string='HelpScout Folder Name',
         required=True,
     )
+    task_ids = fields.One2many(
+        string='Project Tasks',
+        comodel_name='project.task',
+        inverse_name='helpscout_folder_id',
+    )
 
 
 class HelpScoutHelpScoutFolder(models.Model):

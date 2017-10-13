@@ -34,6 +34,15 @@ class HelpScoutMailboxImporter(Component):
     _inherit = 'helpscout.importer'
     _apply_on = 'helpscout.mailbox'
 
+    def _after_import(self, binding):
+        """Add HelpScout status choices as project stages"""
+        helpscout_statuses = ['active', 'pending', 'closed', 'spam']
+        stages = [self._get_stage_id(status) for status in helpscout_statuses]
+        binding.type_ids = [(6, 0, stages)]
+
+    def _get_stage_id(self, status):
+        return self.env.ref('connector_helpscout.status_%s' % status).id
+
 
 class HelpScoutMailboxBatchImporter(Component):
     """Import a batch of HelpScout records."""

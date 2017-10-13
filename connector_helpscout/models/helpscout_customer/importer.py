@@ -27,6 +27,15 @@ class HelpScoutCustomerImportMapper(Component):
             return
 
     @mapping
+    def full_name(self, record):
+        """Ensure at least one name is provided"""
+        if record.first_name or record.last_name:
+            return
+        if not record.full_name:
+            return {'firstname': 'Unknown HelpScout Customer'}
+        return {'firstname': record.full_name}
+
+    @mapping
     @only_create
     def odoo_id(self, record):
         # Searches res.partner records for matching email address,

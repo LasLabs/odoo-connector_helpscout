@@ -24,12 +24,15 @@ class HelpscoutBackend(models.Model):
     _inherit = 'connector.backend'
 
     EVENT_TO_MODEL = {
+        'attachment': 'helpscout.attachment',
         'customer': 'helpscout.customer',
         'folder': 'helpscout.folder',
         'mailbox': 'helpscout.mailbox',
         'user': 'helpscout.user',
         'satisfaction': 'helpscout.rating',
+        'tag': 'helpscout.tag',
         'convo': 'helpscout.conversation',
+        'thread': 'helpscout.thread',
     }
 
     version = fields.Selection(
@@ -73,6 +76,7 @@ class HelpscoutBackend(models.Model):
     )
 
     # These dates are used by the import crons to start where left off.
+    import_conversations_from_date = fields.Datetime()
     import_customers_from_date = fields.Datetime()
     import_mailboxes_from_date = fields.Datetime()
     import_users_from_date = fields.Datetime()
@@ -194,16 +198,23 @@ class HelpscoutBackend(models.Model):
 
     # Import actions
     @api.multi
-    def action_import_mailboxes(self):
-        """Trigger an import for mailboxes on the appropriate from field."""
-        self.import_from_date('helpscout.mailbox',
-                              'import_mailboxes_from_date')
+    def action_import_conversations(self):
+        """Trigger an import for conversations on the appropriate from
+        field."""
+        self.import_from_date('helpscout.conversation',
+                              'import_conversations_from_date')
 
     @api.multi
     def action_import_customers(self):
         """Trigger an import for customers on the appropriate from field."""
         self.import_from_date('helpscout.customer',
                               'import_customers_from_date')
+
+    @api.multi
+    def action_import_mailboxes(self):
+        """Trigger an import for mailboxes on the appropriate from field."""
+        self.import_from_date('helpscout.mailbox',
+                              'import_mailboxes_from_date')
 
     @api.multi
     def action_import_users(self):
