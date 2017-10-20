@@ -36,6 +36,16 @@ class HelpScoutMailboxFolderImporter(Component):
     _inherit = 'helpscout.importer'
     _apply_on = 'helpscout.mailbox.folder'
 
+    def _after_import(self, binding):
+        """Adds project relation after import"""
+        external_mailbox_id = [int(n) for n in self.external_id.split(',')][0]
+        mailbox = self.env['helpscout.mailbox'].search([
+            ('external_id', '=', external_mailbox_id),
+        ])
+        project = mailbox.odoo_id
+        binding.odoo_id.project_ids = [(6, 0, [project.id])]
+        return
+
 
 class HelpScoutMailboxFolderBatchImporter(Component):
     """Import a batch of HelpScout records."""
