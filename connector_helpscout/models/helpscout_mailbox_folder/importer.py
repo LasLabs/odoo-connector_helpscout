@@ -21,13 +21,13 @@ class HelpScoutMailboxFolderImportMapper(Component):
 
     @mapping
     @only_create
-    def odoo_id(self, record):
-        # Searches project.task.type records for matching name
-        stage = self.env['project.task.type'].search([
+    def id(self, record):
+        """Searches helpscout.mailbox.folder records for matching name"""
+        folder = self.env['helpscout.mailbox.folder'].search([
             ('name', '=', record.name),
         ])
-        if stage:
-            return {'odoo_id': stage.id}
+        if folder:
+            return {'id': folder.id}
 
 
 class HelpScoutMailboxFolderImporter(Component):
@@ -35,16 +35,6 @@ class HelpScoutMailboxFolderImporter(Component):
     _name = 'helpscout.record.importer.mailbox.folder'
     _inherit = 'helpscout.importer'
     _apply_on = 'helpscout.mailbox.folder'
-
-    def _after_import(self, binding):
-        """Adds project relation after import"""
-        external_mailbox_id = [int(n) for n in self.external_id.split(',')][0]
-        mailbox = self.env['helpscout.mailbox'].search([
-            ('external_id', '=', external_mailbox_id),
-        ])
-        project = mailbox.odoo_id
-        binding.odoo_id.project_ids = [(6, 0, [project.id])]
-        return
 
 
 class HelpScoutMailboxFolderBatchImporter(Component):

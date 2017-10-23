@@ -6,25 +6,10 @@ from odoo import models, fields
 from odoo.addons.component.core import Component
 
 
-class ProjectTaskType(models.Model):
-
-    _inherit = 'project.task.type'
-
-    helpscout_bind_ids = fields.One2many(
-        string='HelpScout Bindings',
-        comodel_name='helpscout.mailbox.folder',
-        inverse_name='odoo_id',
-    )
-
-
-class HelpScoutMailboxFolder(models.Model):
-
+class HelpscoutMailboxFolder(models.Model):
     _name = 'helpscout.mailbox.folder'
     _inherit = 'helpscout.binding'
-    _inherits = {'project.task.type': 'odoo_id'}
     _description = 'HelpScout Mailbox Folders'
-
-    _rec_name = 'name'
 
     external_id = fields.Char(
         string='HelpScout Mailbox ID, Folder ID',
@@ -41,11 +26,9 @@ class HelpScoutMailboxFolder(models.Model):
         ],
         string="HelpScout type",
     )
-    odoo_id = fields.Many2one(
-        string='Project',
-        comodel_name='project.task.type',
+    name = fields.Char(
+        string='HelpScout Mailbox Folder Name',
         required=True,
-        ondelete='cascade',
     )
 
 
