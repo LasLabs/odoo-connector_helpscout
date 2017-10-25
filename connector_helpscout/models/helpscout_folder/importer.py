@@ -9,10 +9,10 @@ from odoo.addons.connector.components.mapper import (
 )
 
 
-class HelpScoutMailboxFolderImportMapper(Component):
-    _name = 'helpscout.import.mapper.mailbox.folder'
+class HelpScoutFolderImportMapper(Component):
+    _name = 'helpscout.import.mapper.folder'
     _inherit = 'helpscout.import.mapper'
-    _apply_on = 'helpscout.mailbox.folder'
+    _apply_on = 'helpscout.helpscout.folder'
 
     direct = [('type', 'helpscout_type'),
               ('modified_at', 'backend_date_modified'),
@@ -32,28 +32,28 @@ class HelpScoutMailboxFolderImportMapper(Component):
 
     @mapping
     @only_create
-    def id(self, record):
-        """Searches helpscout.mailbox.folder records for matching name"""
-        folder = self.env['helpscout.mailbox.folder'].search([
-            ('name', '=', self._internal_name(self, record)),
+    def odoo_id(self, record):
+        """Searches helpscout.folder records for matching name"""
+        folder = self.env['helpscout.folder'].search([
+            ('name', '=', self._internal_name(record)),
         ])
         if folder:
-            return {'id': folder.id}
+            return {'odoo_id': folder.id}
 
     @mapping
     def name(self, record):
-        return {'name': self._internal_name(self, record)}
+        return {'name': self._internal_name(record)}
 
 
-class HelpScoutMailboxFolderImporter(Component):
+class HelpScoutFolderImporter(Component):
     """Import one HelpScout record."""
-    _name = 'helpscout.record.importer.mailbox.folder'
+    _name = 'helpscout.record.importer.folder'
     _inherit = 'helpscout.importer'
-    _apply_on = 'helpscout.mailbox.folder'
+    _apply_on = 'helpscout.helpscout.folder'
 
 
-class HelpScoutMailboxFolderBatchImporter(Component):
+class HelpScoutFolderBatchImporter(Component):
     """Import a batch of HelpScout records."""
-    _name = 'helpscout.batch.importer.mailbox.folder'
+    _name = 'helpscout.batch.importer.folder'
     _inherit = 'helpscout.direct.batch.importer'
-    _apply_on = 'helpscout.mailbox.folder'
+    _apply_on = 'helpscout.helpscout.folder'

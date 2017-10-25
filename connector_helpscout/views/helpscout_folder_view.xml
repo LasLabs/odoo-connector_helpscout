@@ -4,9 +4,9 @@
 
 <odoo>
 
-    <record id="helpscout_mailbox_folder_form" model="ir.ui.view">
-        <field name="name">helpscout.mailbox.folder.form</field>
-        <field name="model">helpscout.mailbox.folder</field>
+    <record id="helpscout_folder_form" model="ir.ui.view">
+        <field name="name">helpscout.folder.form</field>
+        <field name="model">helpscout.folder</field>
         <field name="arch" type="xml">
             <form string="Mailbox Folder">
 
