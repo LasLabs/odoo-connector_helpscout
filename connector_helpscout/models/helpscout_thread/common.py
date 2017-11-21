@@ -108,12 +108,3 @@ class HelpScoutThreadAdapter(Component):
     _inherit = 'helpscout.adapter'
     _apply_on = 'helpscout.thread'
     _helpscout_endpoint = 'Conversations'
-
-    def create(self, data, conversation_id):
-        return self.endpoint.create_thread(conversation_id,
-                                           self.new_record(data))
-
-    def write(self, _id, data, conversation_id):
-        data['id'] = _id
-        return self.endpoint.update_thread(conversation_id,
-                                           self.new_record(data))

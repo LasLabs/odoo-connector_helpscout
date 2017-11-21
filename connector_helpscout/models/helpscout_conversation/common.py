@@ -15,11 +15,6 @@ class ProjectTask(models.Model):
         comodel_name='helpscout.conversation',
         inverse_name='odoo_id',
     )
-    helpscout_folder_id = fields.Many2one(
-        string='HelpScout Mailbox Folder',
-        comodel_name='helpscout.folder',
-        ondelete='set null',
-    )
 
 
 class HelpScoutConversation(models.Model):
@@ -31,6 +26,11 @@ class HelpScoutConversation(models.Model):
 
     _rec_name = 'name'
 
+    helpscout_folder_id = fields.Many2one(
+        string='HelpScout Mailbox Folder',
+        comodel_name='helpscout.helpscout.folder',
+        ondelete='set null',
+    )
     helpscout_type = fields.Selection(
         selection=[
             ('email', 'Email'),

@@ -7,12 +7,12 @@ from odoo.addons.connector.components.mapper import mapping, only_create
 
 
 tag_color_map = {
-    (211, 211, 211): 0,
-    (0, 128, 0): 1,
-    (255, 255, 0): 2,
-    (255, 0, 0): 4,
-    (128, 0, 128): 5,
-    (0, 0, 255): 6,
+    (211, 211, 211): 0,  # lightgrey
+    (0, 128, 0): 1,  # green
+    (255, 255, 0): 2,  # yellow
+    (255, 0, 0): 4,  # red
+    (128, 0, 128): 5,  # purple
+    (0, 0, 255): 6,  # blue
 }
 
 
@@ -23,17 +23,13 @@ class HelpScoutTagImportMapper(Component):
 
     direct = [('tag', 'name'),
               ('slug', 'helpscout_slug'),
-              ('created_at', 'backend_date_created'),
-              ('modified_at', 'backend_date_modified'),
               ]
 
     @mapping
     @only_create
     def odoo_id(self, record):
         # Searches project.tags records for matching name
-        tag = self.env['project.tags'].search([
-            ('name', '=', record.tag),
-        ])
+        tag = self.env['project.tags'].search([('name', '=', record.tag)])
         if tag:
             return {'odoo_id': tag.id}
 

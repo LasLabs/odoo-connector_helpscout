@@ -35,15 +35,13 @@ class HelpScoutThreadImportMapper(Component):
               ('saved_reply_id', 'helpscout_saved_reply_id'),
               ('state', 'helpscout_state'),
               ('created_at', 'date'),
-              ('created_at', 'backend_date_created'),
-              ('modified_at', 'backend_date_modified'),
               ('opened_at', 'helpscout_date_opened'),
               ]
 
     def _author(self, record):
         person_type = record.created_by.type
         author = self.env['helpscout.%s' % person_type].search([
-            ('external_id', '=', record.created_by.id)
+            ('external_id', '=', record.created_by.id),
         ]).odoo_id
         if person_type == 'user':
             author = author.partner_id

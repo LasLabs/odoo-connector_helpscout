@@ -15,8 +15,6 @@ class HelpScoutCustomerImportMapper(Component):
               (none('last_name'), 'lastname'),
               (none('background'), 'comment'),
               (none('job_title'), 'function'),
-              ('created_at', 'backend_date_created'),
-              ('modified_at', 'backend_date_modified'),
               ]
 
     @mapping

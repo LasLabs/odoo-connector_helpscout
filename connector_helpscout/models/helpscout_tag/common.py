@@ -48,7 +48,7 @@ class HelpScoutTagAdapter(Component):
     def search(self, filters=None):
         return [r.id for r in self.search_read()]
 
-    def read(self, _id):
+    def read(self, external_id):
         for r in self.search_read():
-            if r.id == _id:
+            if r.id == external_id:
                 return r

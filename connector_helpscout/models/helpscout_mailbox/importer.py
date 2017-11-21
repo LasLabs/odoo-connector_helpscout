@@ -13,8 +13,6 @@ class HelpScoutMailboxImportMapper(Component):
 
     direct = [('name', 'name'),
               (none('email'), 'helpscout_email'),
-              ('created_at', 'backend_date_created'),
-              ('modified_at', 'backend_date_modified'),
               ]
 
     @mapping
@@ -35,13 +33,28 @@ class HelpScoutMailboxImporter(Component):
     _apply_on = 'helpscout.mailbox'
 
     def _after_import(self, binding):
-        """Add HelpScout status choices as project stages"""
-        helpscout_statuses = ['active', 'pending', 'closed', 'spam']
-        stages = [self._get_stage_id(status) for status in helpscout_statuses]
-        binding.type_ids = [(6, 0, stages)]
+        """
+        Post-import actions:
 
-    def _get_stage_id(self, status):
-        return self.env.ref('connector_helpscout.status_%s' % status).id
+        Add HelpScout status choices as project stages
+        Import Mailbox Folders
+        """
+        self._add_project_stages(binding)
+        self._import_folders(binding)
+
+    def _add_project_stages(self, binding):
+        helpscout_statuses = ['active', 'pending', 'closed', 'spam']
+        stages = self.env['project.task.type']
+        for status in helpscout_statuses:
+            stages += self.env.ref('connector_helpscout.status_%s' % status)
+        binding.type_ids = [(6, 0, stages.ids)]
+
+    def _import_folders(self, binding):
+        binding_model = self.env['helpscout.helpscout.folder']
+        folders = binding_model
+        for folder in self.helpscout_record['folders']:
+            folders += binding_model.import_direct(self.backend_record, folder)
+        binding.helpscout_folder_ids = [(6, 0, folders.ids)]
 
 
 class HelpScoutMailboxBatchImporter(Component):

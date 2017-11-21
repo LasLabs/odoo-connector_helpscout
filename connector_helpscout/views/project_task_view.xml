@@ -8,9 +8,20 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <field name="date_last_stage_update" position="after">
-                <field name="helpscout_folder_id"/>
-            </field>
+            <page name="description_page" position="after">
+                <page name="helpscout" string="HelpScout">
+                    <group>
+                        <field name="helpscout_bind_ids" nolabel="1">
+                            <tree>
+                                <field name="backend_id"/>
+                                <field name="company_id"/>
+                                <field name="helpscout_folder_id"/>
+                                <field name="helpscout_type"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </page>
         </field>
     </record>
 </odoo>
