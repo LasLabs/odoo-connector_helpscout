@@ -125,7 +125,7 @@ class HelpscoutBackend(models.Model):
         )
 
     @api.multi
-    def action_bulk_import(self):
+    def action_initial_import(self):
         """
         Import external conversation records. Records for other models are
         imported as dependencies of conversations.

@@ -11,10 +11,10 @@
             <form string="HelpScout Backend">
 
                 <header>
-                    <button name="action_bulk_import"
+                    <button name="action_initial_import"
                             type="object"
                             class="oe_highlight"
-                            string="Queue Bulk Import"
+                            string="Queue Initial Import"
                             />
                     <button name="action_create_web_hook"
                             type="object"

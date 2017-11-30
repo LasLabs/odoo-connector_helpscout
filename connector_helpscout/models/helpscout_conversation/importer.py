@@ -62,7 +62,10 @@ class HelpScoutConversationImportMapper(Component):
 
     @mapping
     def tag_ids(self, record):
-        tags = self.env['project.tags'].search([('name', 'in', record.tags)])
+        tags = self.env['helpscout.tag'].search([
+            ('name', 'in', record.tags),
+            ('backend_id', '=', self.backend_record),
+        ])
         if len(tags) != len(record.tags):
             self.env['helpscout.tag'].import_batch(self.backend_record)
             return self.tag_ids(record)

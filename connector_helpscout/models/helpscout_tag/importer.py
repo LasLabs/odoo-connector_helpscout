@@ -29,7 +29,9 @@ class HelpScoutTagImportMapper(Component):
     @only_create
     def odoo_id(self, record):
         # Searches project.tags records for matching name
-        tag = self.env['project.tags'].search([('name', '=', record.tag)])
+        tag = self.env['project.tags'].search([
+            ('name', '=', record.tag)
+        ], limit=1)
         if tag:
             return {'odoo_id': tag.id}
 

@@ -11,6 +11,13 @@ class HelpScoutMailboxImportMapper(Component):
     _inherit = 'helpscout.import.mapper'
     _apply_on = 'helpscout.mailbox'
 
+    HELPSCOUT_STATUSES = [
+        'active',
+        'pending',
+        'closed',
+        'spam',
+    ]
+
     direct = [('name', 'name'),
               (none('email'), 'helpscout_email'),
               ]
@@ -33,19 +40,12 @@ class HelpScoutMailboxImporter(Component):
     _apply_on = 'helpscout.mailbox'
 
     def _after_import(self, binding):
-        """
-        Post-import actions:
-
-        Add HelpScout status choices as project stages
-        Import Mailbox Folders
-        """
         self._add_project_stages(binding)
         self._import_folders(binding)
 
     def _add_project_stages(self, binding):
-        helpscout_statuses = ['active', 'pending', 'closed', 'spam']
         stages = self.env['project.task.type']
-        for status in helpscout_statuses:
+        for status in self.HELPSCOUT_STATUSES:
             stages += self.env.ref('connector_helpscout.status_%s' % status)
         binding.type_ids = [(6, 0, stages.ids)]
 
